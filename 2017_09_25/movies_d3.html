@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Carregando dados de arquivo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+	<hr/>
+    <div id="grafBilheteria"></div>
+
+    <div id="grafOrca"></div>
+
+    <div id="grafLucro"></div>
+
+    <div id="grafGenero"></div>
+
+    // Bilheteria  -->
+
+    <script type="text/javascript">
+        function render(data, comparator) {
+		console.log()
+            d3.select("#grafBilheteria").selectAll("div.h-bar")
+                    .data(data)
+                .enter().append("div")
+                .attr("class", "h-bar")
+                .append("span");
+            
+            d3.select("#grafBilheteria").selectAll("div.h-bar")
+                    .data(data)
+                .attr("class", "h-bar")
+                .style("width", function (d) {
+                    return (d.Worldwide_Gross_M/2.5) + "px";
+                })
+                .select("span")
+                    .text(function (d) {
+                        return d.Film;
+                    
+					console.log() });
+
+            if(comparator)
+            d3.select("body")
+        		.select("#grafBilheteria")
+                .selectAll("div.h-bar") 
+                .sort(comparator);
+        }
+
+        ;
+        var compareBilheteria = function (a, b) { 
+        	return a.Worldwide_Gross_M > b.Worldwide_Gross_M?-1:1;
+    	}
+        d3.json("movies.json", function(error, json){ 
+            d3.select("#grafBilheteria")
+            	.append("h1")
+            	.attr("align", "center")
+            	.append("font")
+            	.attr("color", "black")
+            	.text("Filmes por Bilheteria em Ordem Decrescente");
+            render(json, compareBilheteria);
+        		console.log()});
+    </script>
+
+    //Orçamento
+
+    <script type="text/javascript">
+        function render1(data, comparator) {
+		console.log()
+            d3.select("#grafOrca").selectAll("div.h-bar")
+                    .data(data)
+                .enter().append("div")
+                .attr("class", "h-bar")
+		.style("background-color","rgb(100,169,100)") //você pode por a cor tanto em rgb, rgba, hexadecimal ou constantes (red, blue, magenta, black...)
+
+                .append("span");
+            
+            d3.select("#grafOrca").selectAll("div.h-bar")
+                    .data(data)
+                .attr("class", "h-bar")
+                .style("width", function (d) {
+                    return (d.Budget_M*4) + "px";
+                })
+                .select("span")
+                    .text(function (d) {
+                        return d.Film;
+                    });
+
+            if(comparator)
+            d3.select("body")
+        		.select("#grafOrca")
+                .selectAll("div.h-bar") 
+                .sort(comparator);
+        }
+
+        ;
+        var compareOrca = function (a, b) { 
+        	return a.Budget_M > b.Budget_M?-1:1;
+    	}
+        d3.json("movies.json", function(error, json){ 
+            d3.select("#grafOrca")
+            	.append("h1")
+            	.attr("align", "center")
+            	.append("font")
+            	.attr("color", "black")
+            	.text(" Filmes por Orçamento em Ordem Decrescente");
+            render1(json, compareOrca);
+        });
+    </script>
+
+    <!--  Gráfico de barras - Lucro  -->
+
+    <script type="text/javascript">
+        function render2(data, comparator) {
+            d3.select("#grafLucro").selectAll("div.h-bar")
+                    .data(data)
+                .enter().append("div")
+                .attr("class", "h-bar")
+		.style("background-color","rgb(127,10,2)") //você pode por a
+                .append("span");
+            
+            d3.select("#grafLucro").selectAll("div.h-bar")
+                    .data(data)
+                .attr("class", "h-bar")
+                .style("width", function (d) {
+                    return ((d.Worldwide_Gross_M - d.Budget_M)/2-20) + "px";
+                })
+                .select("span")
+                    .text(function (d) {
+                        return d.Film;
+                    });
+
+            if(comparator)
+            d3.select("body")
+        		.select("#grafLucro")
+                .selectAll("div.h-bar") 
+                .sort(comparator);
+        }
+
+        ;
+        var compareLucro = function (a, b) { 
+        	return (a.Worldwide_Gross_M - a.Budget_M) > (b.Worldwide_Gross_M - b.Budget_M)?-1:1;
+    	}
+        d3.json("movies.json", function(error, json){ 
+            d3.select("#grafLucro")
+            	.append("h1")
+            	.attr("align", "center")
+            	.append("font")
+            	.attr("color", "black")
+            	.text("Filmes por Lucro em Ordem Decrescente");
+            render2(json, compareLucro);
+        });
+    </script>
+
+    
+    <script type="text/javascript">
+        function render3(data, comparator) {
+            var nested_data = d3.nest()
+				.key(function(d) { return d.Genre})
+				.rollup(function(leaves) { return {"value": leaves.Worldwide_Gross_M, "sum": d3.sum(leaves, function(d) {return parseFloat(d.Worldwide_Gross_M);})} })
+				.entries(data);
+            
+
+            d3.select("#grafGenero").selectAll("div.h-bar")
+                    .data(nested_data)
+                .enter().append("div")
+                .attr("class", "h-bar")
+		.style("background-color","rgb(48,48,48)") //você pode por a
+                .append("span");
+           
+            d3.select("#grafGenero").selectAll("div.h-bar")
+                    .data(nested_data)
+                .attr("class", "h-bar")
+                .style("width", function (d) {
+                    return d.value.sum/10 + "px";
+                })
+                .select("span")
+                    .text(function (d) {
+                        return d.key;
+                    });
+
+            if(comparator)
+            d3.select("body")
+        		.select("#grafGenero")
+                .selectAll("div.h-bar") 
+                .sort(comparator);
+        }
+
+        ;
+        var compareGrupoporGener = function (a, b) { 
+        	return a.value.sum > b.value.sum?-1:1;
+    	}
+        d3.json("movies.json", function(error, json){ 
+            d3.select("#grafGenero")
+            	.append("h1")
+            	.attr("align", "center")
+            	.append("font")
+            	.attr("color", "black")
+            	.text("Filmes por Bilheteria Agrupados por Gênero em Ordem Decrescente");
+            render3(json, compareGrupoporGener);
+        });
+    </script>
+    
+
+</body>
+</html>
