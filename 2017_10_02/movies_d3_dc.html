@@ -34,7 +34,7 @@
 	      		somaAno = ano.group().reduceSum(function(d) {return d.Worldwide_Gross_M;});
 
 
-	      		compositegrafBil.width(1100)
+	      		compositegrafBil.width(1300)
 	      						.height(700)
 	    						.x(d3.scale.ordinal())
 	    						.xUnits(dc.units.ordinal)
@@ -59,7 +59,7 @@
         	  	genero = facts2.dimension(function(d) {return d.Genre;});
         	  	somaGenero = genero.group().reduceSum(function(d){return d.Worldwide_Gross_M;});
 
-        	  	compositegrafGen.width(1100)
+        	  	compositegrafGen.width(1300)
 	      						.height(700)
 	    						.x(d3.scale.ordinal())
 	    						.xUnits(dc.units.ordinal)
