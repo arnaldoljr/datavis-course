@@ -12,10 +12,8 @@
 </head>
 
 <body>
-	<hr/>
 	<h2> Bilheterias por Ano </h2>
 	<div id="grafBil"></div>
-	<br/>
     <h2> Bilheterias por Gênero </h2>
     <div id="grafGen"></div>
 
@@ -36,8 +34,8 @@
 	      		somaAno = ano.group().reduceSum(function(d) {return d.Worldwide_Gross_M;});
 
 
-	      		compositegrafBil.width(900)
-	      						.height(400)
+	      		compositegrafBil.width(1100)
+	      						.height(600)
 	    						.x(d3.scale.ordinal())
 	    						.xUnits(dc.units.ordinal)
 	    						.brushOn(true)
@@ -61,8 +59,8 @@
         	  	genero = facts2.dimension(function(d) {return d.Genre;});
         	  	somaGenero = genero.group().reduceSum(function(d){return d.Worldwide_Gross_M;});
 
-        	  	compositegrafGen.width(900)
-	      						.height(400)
+        	  	compositegrafGen.width(1100)
+	      						.height(600)
 	    						.x(d3.scale.ordinal())
 	    						.xUnits(dc.units.ordinal)
 	    						.brushOn(true)
