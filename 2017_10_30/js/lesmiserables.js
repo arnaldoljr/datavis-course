@@ -120,7 +120,7 @@ function Network() {
     tooltip.showTooltip(content, d3.event);
 
     // highlight the node being moused over
-    return d3.select(this).style("stroke", "green").style("stroke-width", 2.0);
+    return d3.select(this).style("stroke", "black").style("stroke-width", 2.0);
     
   }
 
